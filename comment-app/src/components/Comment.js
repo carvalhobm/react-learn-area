@@ -5,7 +5,12 @@ import React, { Component } from 'react'
 const Comment = (props) => {
     return (
         <div className="card">
-            <p className="card-body">{  props.comment.comment }</p>
+            <div className="card-body">
+                {   props.comment.user &&
+                    <h6 className="card-title">{  props.comment.user.name } said:</h6>
+                }
+                <p className="card-text">{  props.comment.comment }</p>
+            </div>
         </div>
     )
 }
