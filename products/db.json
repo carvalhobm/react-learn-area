@@ -1,0 +1,36 @@
+{
+  "products": [
+    {
+      "category": "1",
+      "product": "aaaa",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "category": "2",
+      "product": "Give me Food"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "category": "Cleaners"
+    },
+    {
+      "id": 2,
+      "category": "Food"
+    },
+    {
+      "id": 3,
+      "category": "Utilities"
+    },
+    {
+      "category": "Teste",
+      "id": 4
+    },
+    {
+      "category": "aaaaa",
+      "id": 5
+    }
+  ]
+}
