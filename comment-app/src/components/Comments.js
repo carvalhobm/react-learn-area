@@ -11,7 +11,7 @@ class Comments extends Component {
     render() {
         return (
             <div>
-                {Object.keys(this.props.comments).map(key => this.renderComment(
+                {Object.keys(this.props.comments).sort().reverse().map(key => this.renderComment(
                     key, this.props.comments[key]
                 ))}
             </div>

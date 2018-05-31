@@ -1,39 +1,46 @@
 import React, { Component } from 'react';
 import 'bootstrap-css-only'
+import './css/App.css';
 
-import NewComment from './components/NewComment'
-import Comments from './components/Comments'
+import { 
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom'
+
+import Login from './components/Login'
+import Chat from './components/Chat'
 
 class App extends Component {
   constructor(props) {
     super(props);
     
     this.postNewComment = this.postNewComment.bind(this);
+    this.authStateChanged = this.authStateChanged.bind(this);
 
     this.state = {
       comments: {},
       isLoggedIn: false,
       user: {}
     }
+  }
 
-    this.refComments = this.props.base.syncState('comments', {
-      context: this,
-      state: 'comments'
-    })
-
-    this.props.auth.onAuthStateChanged((user) => {
-      if(user) {
-        this.setState({ 
-          isLoggedIn: true,
-          user: user 
-        })
-      } else {
-        this.setState({ 
-          isLoggedIn: false,
-          user: {} 
-        })
-      }
-    })
+  authStateChanged(user) {
+    if(user) {
+      this.setState({ 
+        isLoggedIn: true,
+        user: user 
+      })
+      
+      this.refComments = this.props.base.syncState('comments', {
+        context: this,
+        state: 'comments'
+      })
+    } else {
+      this.setState({ 
+        isLoggedIn: false,
+        user: {} 
+      })
+    }
   }
 
   postNewComment(comment) {
@@ -52,39 +59,41 @@ class App extends Component {
     })
   }
 
-  auth(provider) {
-    this.props.auth.signInWithPopup(this.props.providers[provider])
-  }
-
   render() {
-    var imgStyle = {
-      borderRadius: '25px',
-      margin: '5px'
-    }
-    var btnLogoffStyle = {
-
-    }
     return (
-      <div className="container">
-        { this.state.isLoggedIn && 
-          <div>
-            <img  alt={ this.state.user.displayName } 
-                  src={ this.state.user.photoURL }  
-                  style={imgStyle}
+      <Router>
+        <div style={{height: '100%'}}>
+          <Route exact path="/" 
+              render={(props) => {
+                return (
+                  <Login {...props} 
+                    auth={this.props.auth}
+                    authStateChanged={this.authStateChanged}
+                    providers={this.props.providers}
+                    isLoggedIn={this.state.isLoggedIn}
+                    user={this.state.user}
                   />
-            { this.state.user.displayName }  
-            <button className="btn btn-sm btn-primary" onClick={() => this.props.auth.signOut()}>Logoff</button>
-            <NewComment postNewComment={this.postNewComment} /> 
-          </div>
-        }
-        { !this.state.isLoggedIn && 
-          <div className='alert alert-info'>
-            <button className="btn btn-sm btn-success" onClick={() => this.auth('facebook')}>Entre com o Facebook para comentar</button>
-          </div>
-        }
-        <Comments comments={this.state.comments} />
-      </div>
-    );
+                )
+              }
+            }
+          />
+          <Route exact path="/chat"
+              render={(props) => {
+                return (
+                    <Chat {...props} 
+                      auth={this.props.auth}
+                      comments={this.state.comments}
+                      isLoggedIn={this.state.isLoggedIn}
+                      user={this.state.user}
+                      postNewComment={this.postNewComment}
+                    />
+                )
+              }
+            }
+          />
+        </div>
+      </Router>
+    )
   }
 }
 

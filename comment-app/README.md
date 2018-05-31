@@ -1,3 +1,9 @@
+## Project Access
+- URL: https://reactjs-61f61.firebaseapp.com
+- FB Test User: harry_lqbltmz_testes@tfbnw.net
+- FB Test Password: pass123
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
